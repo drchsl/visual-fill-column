@@ -133,9 +133,9 @@ that actually visit a file."
   (set-window-fringes (get-buffer-window (current-buffer)) nil)
   (set-window-margins (get-buffer-window (current-buffer)) nil))
 
-(defun visual-fill-column-split-window (&optional window size side pixelwise)
+(defun visual-fill-column-split-window (&optional window size side)
   "Split WINDOW, unsetting its margins first.
-SIZE, SIDE, and PIXELWISE are passed on to `split-window'.  This
+WINDOW, SIZE and SIDE are passed on to `split-window'. This
 function is for use in the window parameter `split-window'."
   (let ((horizontal (memq side '(t left right)))
 	margins new)
@@ -146,7 +146,7 @@ function is for use in the window parameter `split-window'."
     ;; Now try to split the window.
     (set-window-parameter window 'split-window nil)
     (unwind-protect
-	(setq new (split-window window size side pixelwise))
+	(setq new (split-window window size side t))
       (set-window-parameter window 'split-window #'visual-fill-column-split-window)
       ;; Restore old margins if we failed.
       (when (and horizontal (not new))
